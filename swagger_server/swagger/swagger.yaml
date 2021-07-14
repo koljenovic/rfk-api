@@ -1,0 +1,438 @@
+openapi: 3.0.3
+info:
+  title: RFK API Dokumentacija
+  description: "**RFK RESTful API** omogućava jednostavan HTTP REST pristup lokalnim\
+    \ legacy DBF \\\"*bazama podataka*\\\" originalno korištenim u programskim jezicima\
+    \ Clipper i Visual FoxPro. Generički API podržava čitanje i izmjenu postojećih\
+    \ kao i dodavanje novih zapisa kroz emulaciju `SELECT`, `UPDATE` i `INSERT` SQL\
+    \ DML iskaza nad .DBF *tabelama* (datotekama) unutar `data` direktorija, brisanje\
+    \ nije podržano.\n\n**Ne preporučuje se korištenje .DBF datoteka za trajno spremanje\
+    \ podataka u savremenim programskim rješenjima**, ovaj API prvenstveno služi za\
+    \ čitanje podataka zarobljenih u .DBF formatu, migraciju i privremena integracijska\
+    \ rješenja, ukoliko trebate savremeno, pouzdano i jednostavno rješenje za lokalnu\
+    \ pohranu i pristup razmotrite SQLite datotečnu bazu podataka sa punom SQL podrš\
+    kom.\n\n*Napomena:* API je namjenski pisan za RFK računovodstvenu aplikaciju izrađ\
+    enu u Clipperu, te je na njoj i testiran, no trebao bi bez većih izmjena podrž\
+    avati bilo koju vrstu Clipper ili VFP .DBF podatkovne datoteke.\n\nCopyright 2021\
+    \ MEKOM d.o.o. Visoko - MIT Licenca\n"
+  contact:
+    email: malik@mekom.ba
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.0.2
+servers:
+- url: /
+paths:
+  /:
+    get:
+      tags:
+      - Meta
+      summary: Listing dostupnih tabela
+      description: Izlistava sve dostupne `*.DBF` *tabele* u `data` direktoriju (*bazi
+        podataka*)
+      operationId: root_get
+      responses:
+        "200":
+          description: lista svih tabela u bazi
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                x-content-type: application/json
+              examples:
+                ULIZ zapis:
+                  $ref: '#/components/examples/TablesSample'
+        "401":
+          description: API autorizacijski ključ nije unesen ili je pogrešan
+      security:
+      - ReadKey: []
+      - WriteKey: []
+      x-openapi-router-controller: swagger_server.controllers.meta_controller
+  /{table}/details:
+    get:
+      tags:
+      - Meta
+      summary: Izlistava metapodatke za tabelu
+      description: Izlistava nazive svih kolona za datu tabelu.
+      operationId: table_details_get
+      parameters:
+      - name: table
+        in: path
+        description: database name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listing kolona tabele
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                x-content-type: application/json
+              examples:
+                ULIZ detalji:
+                  $ref: '#/components/examples/ULIZDetailsSample'
+        "401":
+          description: API autorizacijski ključ nije unesen ili je pogrešan
+      security:
+      - ReadKey: []
+      - WriteKey: []
+      x-openapi-router-controller: swagger_server.controllers.meta_controller
+  /{table}/filter:
+    post:
+      tags:
+      - Tabele
+      summary: Filtrira rezultate u skladu sa argumentima (SELECT)
+      description: "Filtrira rezultate u skladu sa datim argumentima, ima za cilj\
+        \ emulaciju SQL SELECT iskaza sa WHERE kauzulom. Vraća tabelarne metapodatke\
+        \ uz svaki zahtjev."
+      operationId: table_filter_post
+      parameters:
+      - name: table
+        in: path
+        description: database name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/WhereType'
+            examples:
+              ULIZ filter:
+                $ref: '#/components/examples/ULIZFilter00'
+        required: true
+      responses:
+        "201":
+          description: "lista rezultata koji zadovoljavaju date filtere, kompletna\
+            \ tabela u slučaju praznih filtera"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                x-content-type: application/json
+              examples:
+                ULIZ zapis:
+                  $ref: '#/components/examples/ULIZRecord'
+        "204":
+          description: nema sadržaja koji odgovara datim filterima
+          content:
+            application/json:
+              schema:
+                type: array
+                example: []
+                items:
+                  type: string
+                x-content-type: application/json
+        "400":
+          description: loš ili nepotpun zahtjev
+        "401":
+          description: API autorizacijski ključ nije unesen ili je pogrešan
+      security:
+      - ReadKey: []
+      - WriteKey: []
+      x-openapi-router-controller: swagger_server.controllers.tabele_controller
+  /{table}:
+    post:
+      tags:
+      - Tabele
+      summary: Dodaje novi zapis (INSERT)
+      description: "Dodaje novi zapis u tabelu, emulira SQL INSERT."
+      operationId: table_post
+      parameters:
+      - name: table
+        in: path
+        description: database name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DictType'
+            examples:
+              ULIZ zapis:
+                $ref: '#/components/examples/ULIZRecord'
+        required: true
+      responses:
+        "200":
+          description: potvrda uspješne operacije dodavanja
+        "400":
+          description: "loš zahtjev, zapis nije dodan."
+        "401":
+          description: API autorizacijski ključ nije unesen ili je pogrešan
+      security:
+      - WriteKey: []
+      x-openapi-router-controller: swagger_server.controllers.tabele_controller
+    patch:
+      tags:
+      - Tabele
+      summary: Ažurira zapise u skladu sa filterima (UPDATE)
+      description: "Ažurira jedan ili više zapisa u skladu sa datim filterima, emulira\
+        \ SQL UPDATE."
+      operationId: table_patch
+      parameters:
+      - name: table
+        in: path
+        description: database name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateType'
+            examples:
+              ULIZ izmjena:
+                $ref: '#/components/examples/ULIZUpdate915'
+        required: true
+      responses:
+        "200":
+          description: potvrda uspješne operacije ažuriranja
+        "204":
+          description: "nema sadržaja koji odgovara datim filterima, zapisi nisu až\
+            urirani"
+        "400":
+          description: "loš zahtjev, zapisi nisu ažurirani"
+        "401":
+          description: API autorizacijski ključ nije unesen ili je pogrešan
+      security:
+      - WriteKey: []
+      x-openapi-router-controller: swagger_server.controllers.tabele_controller
+components:
+  schemas:
+    DictType:
+      type: object
+      additionalProperties:
+        oneOf:
+        - type: string
+        - type: number
+        - type: boolean
+      description: generički `dict` podatkovni tip.
+    WhereType:
+      required:
+      - column_name
+      - comparator
+      - value
+      type: object
+      properties:
+        column_name:
+          type: string
+          description: tačan i potpun naziv kolone u tabeli
+        comparator:
+          type: string
+          description: "operator za poređenje, jedna vrijednost od:\n* < (lt), > (gt),\
+            \ <= (lte), >= (gte), == (eq), != (neq)\n* si - parcijalno uparivanje\
+            \ stringova bez obzira na mala i velika slova\n* s - parcijalno uparivanje\
+            \ stringova uz razlikovanje malih i velikih slova\n* x - uparivanje stringova\
+            \ korištenjem regularnih izraza (regex)\n"
+          enum:
+          - lt
+          - gt
+          - lte
+          - gte
+          - eq
+          - neq
+          - si
+          - s
+          - x
+        value:
+          type: string
+          description: vrijednost korištena za komparaciju
+    UpdateType:
+      required:
+      - what
+      - where
+      type: object
+      properties:
+        what:
+          $ref: '#/components/schemas/DictType'
+        where:
+          type: array
+          items:
+            $ref: '#/components/schemas/WhereType'
+  responses:
+    Unauthorized:
+      description: API autorizacijski ključ nije unesen ili je pogrešan
+  examples:
+    ULIZRecord:
+      value:
+      - OBJ_ULI: 10
+        DOK_ULI: 20
+        SIF_ULI: 915
+        NAL_ULI: ADM
+        DAT_ULI: 2021-07-07
+        OTP_ULI: "225883"
+        DAI_ULI: 2021-06-14
+        VAL_ULI: 2021-06-14
+        DAN_ULI: 0
+        RBR_ULI: 2
+        KUF_ULI: "1234"
+        ZAD_ULI: "001"
+        PAR_ULI: "0196552"
+        KAS_ULI: 0
+        PUT_ULI: "001"
+        NAP_ULI: ""
+        L0_ULI: false
+        L1_ULI: false
+        L2_ULI: false
+        L3_ULI: false
+        L4_ULI: false
+        L5_ULI: false
+        L6_ULI: false
+        L7_ULI: false
+        L8_ULI: false
+        L9_ULI: false
+        N1_ULI: 0
+        N2_ULI: 0
+    ULIZFilter00:
+      value:
+      - column_name: OBJ_ULI
+        comparator: eq
+        value: "010"
+      - column_name: DOK_ULI
+        comparator: eq
+        value: "20"
+      - column_name: SIF_ULI
+        comparator: eq
+        value: "915"
+    ULIZUpdate915:
+      value:
+        what:
+          DAT_ULI: 2021-07-13
+        where:
+        - column_name: OBJ_ULI
+          comparator: eq
+          value: "10"
+        - column_name: DOK_ULI
+          comparator: eq
+          value: "20"
+        - column_name: SIF_ULI
+          comparator: eq
+          value: "915"
+    TablesSample:
+      value:
+      - ADOB
+      - KUF
+      - PRRA
+      - ADRE
+      - KUPA
+      - PRXX
+      - AKUP
+      - MAJS
+      - PUTN
+      - ANFA
+      - OBJE
+      - RABA
+      - APRR
+      - OURI
+      - REGI
+      - REZE
+      - PART
+      - ROBA
+      - CSSA
+      - PASS
+      - SNUM
+      - DOBA
+      - POBA
+      - SORM
+      - DROB
+      - POPR
+      - TARI
+      - FAKT
+      - POS
+      - ULIZ
+      - GOTO
+      - POSP
+      - USLU
+      - KATE
+      - PROM
+      - ZADL
+      - KLAS
+      - PROP
+    ULIZDetailsSample:
+      value:
+      - OBJ_ULI
+      - DOK_ULI
+      - SIF_ULI
+      - GOT_ULI
+      - NAL_ULI
+      - DAT_ULI
+      - OTP_ULI
+      - NAO_ULI
+      - DAI_ULI
+      - MIS_ULI
+      - VAL_ULI
+      - DAN_ULI
+      - RBR_ULI
+      - KUF_ULI
+      - ZAD_ULI
+      - PAR_ULI
+      - PRO_ULI
+      - TRG_ULI
+      - KAS_ULI
+      - PUT_ULI
+      - NAP_ULI
+      - LIK_ULI
+      - FIN_ULI
+      - L0_ULI
+      - L1_ULI
+      - L2_ULI
+      - L3_ULI
+      - L4_ULI
+      - L5_ULI
+      - L6_ULI
+      - L7_ULI
+      - L8_ULI
+      - L9_ULI
+      - L1A_ULI
+      - L2A_ULI
+      - L3A_ULI
+      - L4A_ULI
+      - L5A_ULI
+      - N1_ULI
+      - N2_ULI
+      - FIS_ULI
+      - REK_ULI
+      - STO_ULI
+      - FRA_ULI
+      - FRR_ULI
+      - MJE_ULI
+      - PAS_ULI
+      - DAS_ULI
+      - MTR_ULI
+  securitySchemes:
+    ReadKey:
+      type: apiKey
+      name: X-API-RKEY
+      in: header
+      x-apikeyInfoFunc: swagger_server.controllers.authorization_controller.check_ReadKey
+    WriteKey:
+      type: apiKey
+      name: X-API-WKEY
+      in: header
+      x-apikeyInfoFunc: swagger_server.controllers.authorization_controller.check_WriteKey
+
