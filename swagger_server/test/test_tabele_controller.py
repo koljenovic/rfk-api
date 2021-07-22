@@ -19,14 +19,30 @@ class TestTabeleController(BaseTestCase):
 
         Filtrira rezultate u skladu sa argumentima (SELECT)
         """
-        body = [WhereType()]
+        body = [
+            WhereType('OBJ_ULI', 'eq', '010'),
+            WhereType('DOK_ULI', 'eq', '20'),
+            WhereType('SIF_ULI', 'eq', '915'),
+        ]
+        headers = {
+            'X-API-RKEY': 'ggbTbze1HH9V5WHdctgcA8PKvnE1htlxWyczGHOgQHYHEpO13X',
+            'X-API-WKEY': '1L7g6eq0LXil2xzoEv7CnwvglwWEu9PNgA2vgulNhAZR5HD1MM',
+            'X-TESTING': 'true',
+        }
         response = self.client.open(
-            '/{table}/filter'.format(table='table_example'),
+            '/{table}/filter'.format(table='ULIZ'),
             method='POST',
+            headers=headers,
             data=json.dumps(body),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
+        outcome = None
+        try:
+            outcome = json.loads(response.data)
+        except:
+            pass
+        self.assertEqual(isinstance(outcome, list), True)
 
     def test_table_patch(self):
         """Test case for table_patch
@@ -49,7 +65,7 @@ class TestTabeleController(BaseTestCase):
         """
         body = [DictType()]
         response = self.client.open(
-            '/{table}'.format(table='table_example'),
+            '/{table}'.format(table='ULIZ'),
             method='POST',
             data=json.dumps(body),
             content_type='application/json')

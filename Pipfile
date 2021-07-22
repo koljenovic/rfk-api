@@ -4,10 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flask = "<2"
 connexion = {extras = ["swagger-ui"], version = "*"}
 python-dateutil = "==2.6.0"
+rfkadapter = {editable = true, path = "./../rfk"}
 
 [dev-packages]
+coverage = ">=4.0.3"
+pluggy = ">=0.3.1"
+py = ">=1.4.31"
+randomize = ">=0.13"
+tox = "==3.20.1"
+Flask-Testing = "==0.8.0"
 
 [requires]
 python_version = "3.9"
