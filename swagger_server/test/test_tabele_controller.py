@@ -43,6 +43,28 @@ class TestTabeleController(BaseTestCase):
         except:
             pass
         self.assertEqual(isinstance(outcome, list), True)
+        self.assertEqual(outcome[0]['OBJ_ULI'], 10)
+        self.assertEqual(outcome[0]['DOK_ULI'], 20)
+        self.assertEqual(outcome[0]['SIF_ULI'], 915)
+        body = [
+            WhereType('OBJ_ULI', 'eq', '12'),
+            WhereType('DOK_ULI', 'eq', '20'),
+        ]
+        response = self.client.open(
+            '/{table}/filter'.format(table='ULIZ'),
+            method='POST',
+            headers=headers,
+            data=json.dumps(body),
+            content_type='application/json')
+        outcome = None
+        try:
+            outcome = json.loads(response.data)
+        except:
+            pass
+        self.assertEqual(isinstance(outcome, list), True)
+        for record in outcome:
+            self.assertEqual(record['OBJ_ULI'], 12)
+            self.assertEqual(record['DOK_ULI'], 20)
 
     def test_table_patch(self):
         """Test case for table_patch
@@ -71,7 +93,6 @@ class TestTabeleController(BaseTestCase):
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
-
 
 if __name__ == '__main__':
     import unittest
