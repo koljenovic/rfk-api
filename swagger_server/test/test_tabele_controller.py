@@ -10,6 +10,11 @@ from swagger_server.models.update_type import UpdateType  # noqa: E501
 from swagger_server.models.where_type import WhereType  # noqa: E501
 from swagger_server.test import BaseTestCase
 
+AUTH_HEADERS = {
+    'X-API-RKEY': 'ggbTbze1HH9V5WHdctgcA8PKvnE1htlxWyczGHOgQHYHEpO13X',
+    'X-API-WKEY': '1L7g6eq0LXil2xzoEv7CnwvglwWEu9PNgA2vgulNhAZR5HD1MM',
+    'X-TESTING': 'true',
+}
 
 class TestTabeleController(BaseTestCase):
     """TabeleController integration test stubs"""
@@ -24,15 +29,10 @@ class TestTabeleController(BaseTestCase):
             WhereType('DOK_ULI', 'eq', '20'),
             WhereType('SIF_ULI', 'eq', '915'),
         ]
-        headers = {
-            'X-API-RKEY': 'ggbTbze1HH9V5WHdctgcA8PKvnE1htlxWyczGHOgQHYHEpO13X',
-            'X-API-WKEY': '1L7g6eq0LXil2xzoEv7CnwvglwWEu9PNgA2vgulNhAZR5HD1MM',
-            'X-TESTING': 'true',
-        }
         response = self.client.open(
             '/{table}/filter'.format(table='ULIZ'),
             method='POST',
-            headers=headers,
+            headers=AUTH_HEADERS,
             data=json.dumps(body),
             content_type='application/json')
         self.assert200(response,
@@ -53,7 +53,7 @@ class TestTabeleController(BaseTestCase):
         response = self.client.open(
             '/{table}/filter'.format(table='ULIZ'),
             method='POST',
-            headers=headers,
+            headers=AUTH_HEADERS,
             data=json.dumps(body),
             content_type='application/json')
         outcome = None

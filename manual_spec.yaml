@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: "0.0.2"
+  version: "0.0.3"
   title: "RFK API Dokumentacija"
   description: |
     **RFK RESTful API** omogućava jednostavan HTTP REST pristup lokalnim legacy DBF \"*bazama podataka*\" originalno korištenim u programskim jezicima Clipper i Visual FoxPro. Generički API podržava čitanje i izmjenu postojećih kao i dodavanje novih zapisa kroz emulaciju `SELECT`, `UPDATE` i `INSERT` SQL DML iskaza nad .DBF *tabelama* (datotekama) unutar `data` direktorija, brisanje nije podržano.
@@ -40,7 +40,11 @@ paths:
                 ULIZ zapis:
                   $ref: '#/components/examples/TablesSample'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NoTable'
+        500:
+          $ref: '#/components/responses/NoEnv'
   /{table}/details:
     get:
       summary: Izlistava metapodatke za tabelu
@@ -63,7 +67,11 @@ paths:
                 ULIZ detalji:
                   $ref: '#/components/examples/ULIZDetailsSample'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NoTable'
+        500:
+          $ref: '#/components/responses/NoEnv'
     parameters:
     - name: table
       in: path
@@ -92,7 +100,7 @@ paths:
               ULIZ filter:
                 $ref: '#/components/examples/ULIZFilter00'
       responses:
-        201:
+        200:
           description: lista rezultata koji zadovoljavaju date filtere, kompletna tabela u slučaju praznih filtera
           content:
             application/json:
@@ -103,20 +111,14 @@ paths:
               examples:
                 ULIZ zapis:
                   $ref: '#/components/examples/ULIZRecord'
-        204:
-          description: nema sadržaja koji odgovara datim filterima
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                example:
-                  []
         400:
           description: loš ili nepotpun zahtjev
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NoTable'
+        500:
+          $ref: '#/components/responses/NoEnv'
     parameters:
     - name: table
       in: path
@@ -149,7 +151,11 @@ paths:
         400:
           description: loš zahtjev, zapis nije dodan.
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NoTable'
+        500:
+          $ref: '#/components/responses/NoEnv'
     patch:
       summary: Ažurira zapise u skladu sa filterima (UPDATE)
       description: Ažurira jedan ili više zapisa u skladu sa datim filterima, emulira SQL UPDATE.
@@ -174,7 +180,11 @@ paths:
         400:
           description: loš zahtjev, zapisi nisu ažurirani
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NoTable'
+        500:
+          $ref: '#/components/responses/NoEnv'
     parameters:
     - name: table
       in: path
@@ -418,3 +428,7 @@ components:
   responses:
     Unauthorized:
       description: API autorizacijski ključ nije unesen ili je pogrešan
+    NoTable:
+      description: tabela sa datim nazivom ne postoji ili je naziv pogrešan
+    NoEnv:
+      description: nije podešena RFK_HOME varijabla okruženja

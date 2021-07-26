@@ -20,7 +20,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.0.2
+  version: 0.0.3
 servers:
 - url: /
 paths:
@@ -46,7 +46,11 @@ paths:
                 ULIZ zapis:
                   $ref: '#/components/examples/TablesSample'
         "401":
-          description: API autorizacijski ključ nije unesen ili je pogrešan
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NoTable'
+        "500":
+          $ref: '#/components/responses/NoEnv'
       security:
       - ReadKey: []
       - WriteKey: []
@@ -81,7 +85,11 @@ paths:
                 ULIZ detalji:
                   $ref: '#/components/examples/ULIZDetailsSample'
         "401":
-          description: API autorizacijski ključ nije unesen ili je pogrešan
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NoTable'
+        "500":
+          $ref: '#/components/responses/NoEnv'
       security:
       - ReadKey: []
       - WriteKey: []
@@ -116,7 +124,7 @@ paths:
                 $ref: '#/components/examples/ULIZFilter00'
         required: true
       responses:
-        "201":
+        "200":
           description: "lista rezultata koji zadovoljavaju date filtere, kompletna\
             \ tabela u slučaju praznih filtera"
           content:
@@ -129,20 +137,14 @@ paths:
               examples:
                 ULIZ zapis:
                   $ref: '#/components/examples/ULIZRecord'
-        "204":
-          description: nema sadržaja koji odgovara datim filterima
-          content:
-            application/json:
-              schema:
-                type: array
-                example: []
-                items:
-                  type: string
-                x-content-type: application/json
         "400":
           description: loš ili nepotpun zahtjev
         "401":
-          description: API autorizacijski ključ nije unesen ili je pogrešan
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NoTable'
+        "500":
+          $ref: '#/components/responses/NoEnv'
       security:
       - ReadKey: []
       - WriteKey: []
@@ -180,7 +182,11 @@ paths:
         "400":
           description: "loš zahtjev, zapis nije dodan."
         "401":
-          description: API autorizacijski ključ nije unesen ili je pogrešan
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NoTable'
+        "500":
+          $ref: '#/components/responses/NoEnv'
       security:
       - WriteKey: []
       x-openapi-router-controller: swagger_server.controllers.tabele_controller
@@ -218,7 +224,11 @@ paths:
         "400":
           description: "loš zahtjev, zapisi nisu ažurirani"
         "401":
-          description: API autorizacijski ključ nije unesen ili je pogrešan
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NoTable'
+        "500":
+          $ref: '#/components/responses/NoEnv'
       security:
       - WriteKey: []
       x-openapi-router-controller: swagger_server.controllers.tabele_controller
@@ -277,6 +287,10 @@ components:
   responses:
     Unauthorized:
       description: API autorizacijski ključ nije unesen ili je pogrešan
+    NoTable:
+      description: tabela sa datim nazivom ne postoji ili je naziv pogrešan
+    NoEnv:
+      description: nije podešena RFK_HOME varijabla okruženja
   examples:
     ULIZRecord:
       value:
@@ -435,4 +449,3 @@ components:
       name: X-API-WKEY
       in: header
       x-apikeyInfoFunc: swagger_server.controllers.authorization_controller.check_WriteKey
-
