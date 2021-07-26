@@ -26,7 +26,6 @@ def table_filter_post(body, table):  # noqa: E501
     if connexion.request.is_json:
         testing = 'X-TESTING' in connexion.request.headers
         _adapter = ControllerHelper.make_adapter(table, testing=testing)
-        # @HERE@TODO: sanitize body
         _ = [WhereType.from_dict(e) for e in body]
         conditions = [c.values() for c in body]
         return _adapter.where(conditions)
@@ -64,5 +63,11 @@ def table_post(body, table):  # noqa: E501
     :rtype: None
     """
     if connexion.request.is_json:
+        testing = 'X-TESTING' in connexion.request.headers
+        _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
         body = [DictType.from_dict(d) for d in connexion.request.get_json()]  # noqa: E501
-    return 'do some magic!'
+        for record in body:
+            _adapter.write(record)
+        return ''
+
+    raise ProblemException(status=400, title='ERROR: request body not JSON or invalid', detail='request body has to be valid WhereType style JSON')

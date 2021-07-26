@@ -85,14 +85,15 @@ class TestTabeleController(BaseTestCase):
 
         Dodaje novi zapis (INSERT)
         """
-        body = [DictType()]
+        tobj01 = { 'DAI_ULI': '2021-06-14', 'DAN_ULI': 0, 'DAT_ULI': '2021-07-07', 'DOK_ULI': 20, 'KAS_ULI': 0, 'KUF_ULI': '1234', 'L0_ULI': False, 'L1_ULI': False, 'L2_ULI': False, 'L3_ULI': False, 'L4_ULI': False, 'L5_ULI': False, 'L6_ULI': False, 'L7_ULI': False, 'L8_ULI': False, 'L9_ULI': False, 'N1_ULI': 0, 'N2_ULI': 0, 'NAL_ULI': 'ADM', 'NAP_ULI': '', 'OBJ_ULI': 10, 'OTP_ULI': '225883', 'PAR_ULI': '0196552', 'PUT_ULI': '001', 'RBR_ULI': 2, 'SIF_ULI': 883, 'VAL_ULI': '2021-06-14', 'ZAD_ULI': '001' }
+        body = [DictType.from_dict(tobj01), DictType.from_dict(tobj01)]
         response = self.client.open(
-            '/{table}'.format(table='ULIZ'),
+            '/{table}'.format(table='uliz'),
             method='POST',
+            headers=AUTH_HEADERS,
             data=json.dumps(body),
-            content_type='application/json')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+            content_type='application/json')        
+        self.assert200(response, 'Response body is : ' + response.data.decode('utf-8'))
 
 if __name__ == '__main__':
     import unittest
