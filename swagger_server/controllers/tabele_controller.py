@@ -46,8 +46,14 @@ def table_patch(body, table):  # noqa: E501
     :rtype: None
     """
     if connexion.request.is_json:
+        testing = 'X-TESTING' in connexion.request.headers
+        _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
+        conditions = [c.values() for c in body['where']]
         body = UpdateType.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        _adapter.update(body.what, conditions)
+        return ''
+        
+    raise ProblemException(status=400, title='ERROR: request body not JSON or invalid', detail='request body has to be valid WhereType style JSON')
 
 
 def table_post(body, table):  # noqa: E501
