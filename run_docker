@@ -1,0 +1,1 @@
+docker run -dp 8844:8844 -v /home/koljenovic/code/refko/rfk/tests/data:/usr/src/app/.data rfkapi:0.3.0

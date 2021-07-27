@@ -1,3 +1,7 @@
+.data
+.git
+run_docker
+
 .travis.yaml
 .swagger-codegen-ignore
 README.md
