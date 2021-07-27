@@ -8,6 +8,7 @@ flask = "<2"
 connexion = {extras = ["swagger-ui"], version = "*"}
 python-dateutil = "==2.6.0"
 rfkadapter = {editable = true, path = "./../rfk"}
+gunicorn = "*"
 
 [dev-packages]
 coverage = ">=4.0.3"
