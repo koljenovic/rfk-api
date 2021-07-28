@@ -29,7 +29,7 @@ class TestTabeleController(BaseTestCase):
         body = [
             WhereType('OBJ_ULI', 'eq', '010'),
             WhereType('DOK_ULI', 'eq', '20'),
-            WhereType('SIF_ULI', 'eq', '915'),
+            WhereType('SIF_ULI', 'eq', '875'),
         ]
         response = self.client.open(
             '/{table}/filter'.format(table='ULIZ'),
@@ -47,7 +47,7 @@ class TestTabeleController(BaseTestCase):
         self.assertEqual(isinstance(outcome, list), True)
         self.assertEqual(outcome[0]['OBJ_ULI'], 10)
         self.assertEqual(outcome[0]['DOK_ULI'], 20)
-        self.assertEqual(outcome[0]['SIF_ULI'], 915)
+        self.assertEqual(outcome[0]['SIF_ULI'], 875)
         body = [
             WhereType('OBJ_ULI', 'eq', '12'),
             WhereType('DOK_ULI', 'eq', '20'),

@@ -11,7 +11,6 @@ class ControllerHelper:
         _db_path = os.getenv('RFK_TEST_HOME') if testing else os.getenv('RFK_HOME')
         if _db_path == None or not os.path.isdir(_db_path):
             raise ProblemException(status=500, title='ERROR: RFK_HOME not set', detail='RFK_HOME environment variable has to be set to valid data directory path.')
-        # @TODO: sanitize and validate table exists, else raise
         table = re.sub(r'\W', '', table, flags=re.A)
         table += '.DBF'
         table = table.lower()
