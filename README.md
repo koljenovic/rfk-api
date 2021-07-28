@@ -61,4 +61,50 @@ Za pokretanje `rfkapi` docker instance dovoljno je pokrenuti već pripremljene s
 ./run_docker
 ```
 
-Copyright 2021 MEKOM d.o.o. Visoko - MIT Licenca
+## Licenca
+
+```
+Copyright (c) 2021 MEKOM d.o.o. Visoko - MIT Licenca
+
+Dozvola se daje, besplatno, bilo kojoj osobi koja ima kopiju ovog softvera
+i odgovarajuću dokumentaciju ("SOFTVER"), da koristi softver bez ikakvih
+ograničenja, uključujući bez ograničenja prava na korištenje, kopiranje,
+izmjenu, spajanje, objavljivanje, distribuciju, podlicenciranje,
+i/ili prodaju kopija SOFTVERA, kao i da dozvoli osobama za koje je SOFTVER
+namenjen da rade isto, u skladu sa sledećim uslovima:
+
+Obaveštenja o autorskim pravima navedena iznad kao i ovo obavještenje
+o dozvoljenom korištenju treba da budu uključena u sve kopije
+ili bitne dijelove SOFTVERA.
+
+SOFTVER SE DAJE "TAKAV KAKAV JESTE", BEZ GARANCIJA BILO KAKVE VRSTE,
+EKSPLICITNIH ILI IMPLICITNIH, UKLJUČUJUĆI ALI NE OGRANIČAVAJUĆI SE
+NA GARANCIJE MOGUĆNOSTI PRODAJE, PODESNOSTI ZA BILO KOJU NAMJENU,
+ZAKONITOSTI ILI NEKRŠENJA TUĐIH PRAVA. NI U KOM SLUČAJU AUTORI
+ILI VLASNICI AUTORSKIH PRAVA NEĆE BITI ODGOVORNI ZA BILO KAKAV ZAHTJEV,
+OŠTEĆENJE ILI NEDOSTATKE BILO KOJE VRSTE, DA LI ZBOG UGOVORA, DELIKTA
+ILI NA NEKI DRUGI NAČIN, NASTALOG NEVEZANO ILI VEZANO IZ SOFTVERA ILI
+KORIŠTENJEM ILI DRUGOG POSLA SA SOFTVEROM.
+
+---
+
+Copyright (c) 2021 MEKOM d.o.o. Visoko - MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
