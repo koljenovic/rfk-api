@@ -3,6 +3,7 @@ import os
 import re
 
 from rfkadapter import RFKAdapter
+from mdbf import DbfError
 
 def list_tables(testing=False):
     _db_path = os.getenv('RFK_TEST_HOME') if testing else os.getenv('RFK_HOME')
@@ -21,7 +22,7 @@ def make_adapter(table, mode='R', testing=False):
         print('RFK_HOME environment variable has to be set to valid data directory path.')
     try:
         return RFKAdapter(_db_path + '/', table, mode)
-    except Exception as e:
+    except DbfError as e:
         return e
 
 if __name__ == '__main__':
