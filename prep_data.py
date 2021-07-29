@@ -19,10 +19,17 @@ def make_adapter(table, mode='R', testing=False):
     _db_path = os.getenv('RFK_TEST_HOME') if testing else os.getenv('RFK_HOME')
     if _db_path == None or not os.path.isdir(_db_path):
         print('RFK_HOME environment variable has to be set to valid data directory path.')
-    return RFKAdapter(_db_path + '/', table, mode)
+    try:
+        return RFKAdapter(_db_path + '/', table, mode)
+    except Exception as e:
+        return e
 
 if __name__ == '__main__':
     for table in list_tables():
-        print(table)
         _adapter = make_adapter(table)
-        _adapter._cache_headers()
+        if isinstance(_adapter, RFKAdapter):
+            print('DONE:\t', table)
+            _adapter._cache_headers()
+        else:
+            print('ERROR:\t', table)
+            print(' ⚠️\t', _adapter)
