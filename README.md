@@ -5,6 +5,8 @@
 
 API je prilično brz i vraća rezultate u vremenskom rasponu od 50 ms za jedan filtrirani rezultat do 500 ms za kompletnu tabelu od nekoliko stotina unosa, ukoliko zahtjevi traju duže od jedne sekunde provjerite vaš klijent, npr. Swagger probni klijent uključen u API dokumentaciji na URL-u datom ispod je relativno vrlo spor za sve odgovore sa preko par desetaka objekata, pa to imajte na umu prilikom korištenja dokumentacije. Za realniju sliku performansi koristite Insomnia, Postman ili Milkman API klijente.
 
+**UPOZORENJE: korištnje `rfkapi` može uzrokovati nepopravljiva oštećenja vaše baze podataka, poželjno je da u svakom trenutku osigurate pravovremenu rezervnu kopiju vaših podataka, te da istu arhivirate u slučaju da tek naknadno otkrijete prouzrokovana oštećenja. Vjerovatnoću oštećenja možete umanjiti tako što nećete istovremeno koristiti druge programe koji vrše izmjene vaših podataka, korištenjem replicirane kopije podataka ili korištenjem samo metoda za čitanje podataka, tj. izbjegavanjem pisanja novih i izmjene postojećih podataka.**
+
 *Napomena:* API je namjenski pisan za RFK računovodstvenu aplikaciju izrađenu u Clipperu, te je na njoj i testiran, no trebao bi bez većih izmjena podržavati bilo koju vrstu Clipper ili VFP .DBF podatkovne datoteke.
 
 ## Okruženje
