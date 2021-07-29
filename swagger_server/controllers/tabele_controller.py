@@ -4,6 +4,7 @@ import six
 from flask import json
 from connexion.exceptions import ProblemException
 from .controller_helper import ControllerHelper
+from rfkadapter import FieldError
 
 from swagger_server.models.dict_type import DictType  # noqa: E501
 from swagger_server.models.update_type import UpdateType  # noqa: E501
@@ -28,7 +29,10 @@ def table_filter_post(body, table):  # noqa: E501
         _adapter = ControllerHelper.make_adapter(table, testing=testing)
         _ = [WhereType.from_dict(e) for e in body]
         conditions = [c.values() for c in body]
-        return _adapter.where(conditions)
+        try:
+            return _adapter.where(conditions)
+        except FieldError as e:
+            raise ProblemException(status=400, title='ERROR: no key exists', detail=str(e))
 
     raise ProblemException(status=400, title='ERROR: request body not JSON or invalid', detail='request body has to be valid WhereType style JSON')
 

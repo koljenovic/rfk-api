@@ -48,6 +48,18 @@ class TestTabeleController(BaseTestCase):
         self.assertEqual(outcome[0]['OBJ_ULI'], 10)
         self.assertEqual(outcome[0]['DOK_ULI'], 20)
         self.assertEqual(outcome[0]['SIF_ULI'], 875)
+        # CASE: key does not exist
+        body = [
+            WhereType('NON_NON', 'eq', '10'),
+        ]
+        response = self.client.open(
+            '/{table}/filter'.format(table='ULIZ'),
+            method='POST',
+            headers=AUTH_HEADERS,
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert400(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
         body = [
             WhereType('OBJ_ULI', 'eq', '12'),
             WhereType('DOK_ULI', 'eq', '20'),
