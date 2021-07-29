@@ -3,15 +3,15 @@
     
 **Ne preporučuje se korištenje .DBF datoteka za trajno spremanje podataka u savremenim programskim rješenjima**, ovaj API prvenstveno služi za čitanje podataka zarobljenih u .DBF formatu, migraciju i privremena integracijska rješenja, ukoliko trebate savremeno, pouzdano i jednostavno rješenje za lokalnu pohranu i pristup razmotrite SQLite datotečnu bazu podataka sa punom SQL podrškom.
 
-API je prilično brz i vraća rezultate u vremenskom rasponu od 50 ms za jedan filtrirani rezultat do 500 ms za kompletnu tabelu od nekoliko stotina unosa, ukoliko zahtjevi traju duže od jedne sekunde provjerite vaš klijent, npr. Swagger probni klijent uključen u API dokumentaciji na URL-u datom ispod je relativno vrlo spor za sve odgovore sa preko par desetaka objekata, pa to imajte na umu prilikom korištenja dokumentacije. Za realniju sliku performansi koristite Insomnia, Postman ili Milkman namjenske API klijente.
+API je prilično brz i vraća rezultate u vremenskom rasponu od 50 ms za jedan filtrirani rezultat do 500 ms za kompletnu tabelu od nekoliko stotina unosa, ukoliko zahtjevi traju duže od jedne sekunde provjerite vaš klijent, npr. Swagger probni klijent uključen u API dokumentaciji na URL-u datom ispod je relativno vrlo spor za sve odgovore sa preko par desetaka objekata, pa to imajte na umu prilikom korištenja dokumentacije. Za realniju sliku performansi koristite Insomnia, Postman ili Milkman API klijente.
 
 *Napomena:* API je namjenski pisan za RFK računovodstvenu aplikaciju izrađenu u Clipperu, te je na njoj i testiran, no trebao bi bez većih izmjena podržavati bilo koju vrstu Clipper ili VFP .DBF podatkovne datoteke.
-    
-## Oruženje
+
+## Okruženje
 Python 3.9+, linux, bash, pip
 
 ## Korištenje
-Prije nego što prvi put pokrenete `rfkapi` potrebno je da sve `.DBF`, kao i ostale indeksne, memo i slične datoteke kojima želite prisupati stavite u jedan direktorij po izboru (*npr. `~/.rfk/data`*), putanju ka tom direktoriju koji sadrži vašu bazu neophodno je upisati u RFK_HOME varijablu okruženja (*en. environment variable*) i bez ove postavke lokalna instanca će pri izvršavanju javljati grešku.
+Prije nego što prvi put pokrenete `rfkapi` potrebno je da sve `.DBF`, kao i ostale indeksne, memo i slične datoteke kojima želite prisupati stavite u jedan direktorij po izboru (*npr. `~/.rfk/data`*), putanju ka tom direktoriju koji sadrži vašu bazu neophodno je upisati u `RFK_HOME` varijablu okruženja (*en. environment variable*), bez ove postavke lokalna instanca će pri izvršavanju javljati grešku.
 
 Nakon što ste postavili varijable okruženja u korijenskom `rfkapi` direktoriju izvršite instalaciju potrebnih biblioteka i pokrenite skriptu za pripremu podataka:
 
@@ -66,25 +66,24 @@ Za pokretanje `rfkapi` docker instance dovoljno je pokrenuti već pripremljene s
 ```
 Copyright (c) 2021 MEKOM d.o.o. Visoko - MIT Licenca
 
-Dozvola se daje, besplatno, bilo kojoj osobi koja ima kopiju ovog softvera
-i odgovarajuću dokumentaciju ("SOFTVER"), da koristi softver bez ikakvih
+Daje se dozvola, bez naknade, bilo kojoj osobi koja ima kopiju ovog programa
+i odgovarajuću dokumentaciju ("SOFTWARE"), da koristi SOFTWARE bez ikakvih
 ograničenja, uključujući bez ograničenja prava na korištenje, kopiranje,
-izmjenu, spajanje, objavljivanje, distribuciju, podlicenciranje,
-i/ili prodaju kopija SOFTVERA, kao i da dozvoli osobama za koje je SOFTVER
-namenjen da rade isto, u skladu sa sledećim uslovima:
+izmjenu, spajanje, objavljivanje, dijeljenje, podlicenciranje, i/ili prodaju
+kopija SOFTWAREA, kao i da dozvoli osobama za koje je SOFTWARE namijenjen
+da rade isto, u skladu sa sljedećim uslovima:
 
-Obaveštenja o autorskim pravima navedena iznad kao i ovo obavještenje
-o dozvoljenom korištenju treba da budu uključena u sve kopije
-ili bitne dijelove SOFTVERA.
+Obavještenja o autorskim pravima navedena iznad kao i ovo obavještenje odobrenja
+imaju biti uključena u sve kopije ili bitne dijelove SOFTWAREA.
 
-SOFTVER SE DAJE "TAKAV KAKAV JESTE", BEZ GARANCIJA BILO KAKVE VRSTE,
+SOFTWARE SE DAJE "TAKAV KAKAV JESTE", BEZ GARANCIJA BILO KAKVE VRSTE,
 EKSPLICITNIH ILI IMPLICITNIH, UKLJUČUJUĆI ALI NE OGRANIČAVAJUĆI SE
 NA GARANCIJE MOGUĆNOSTI PRODAJE, PODESNOSTI ZA BILO KOJU NAMJENU,
-ZAKONITOSTI ILI NEKRŠENJA TUĐIH PRAVA. NI U KOM SLUČAJU AUTORI
+ZAKONITOSTI ILI NEKRŠENJA TUĐIH PRAVA. NI U KOJEM SLUČAJU AUTORI
 ILI VLASNICI AUTORSKIH PRAVA NEĆE BITI ODGOVORNI ZA BILO KAKAV ZAHTJEV,
 OŠTEĆENJE ILI NEDOSTATKE BILO KOJE VRSTE, DA LI ZBOG UGOVORA, DELIKTA
-ILI NA NEKI DRUGI NAČIN, NASTALOG NEVEZANO ILI VEZANO IZ SOFTVERA ILI
-KORIŠTENJEM ILI DRUGOG POSLA SA SOFTVEROM.
+ILI NA NEKI DRUGI NAČIN, NASTALOG NEVEZANO ILI VEZANO IZ SOFTWAREA ILI
+KORIŠTENJEM ILI DRUGOG POSLA SA SOFTWAREOM.
 
 ---
 
