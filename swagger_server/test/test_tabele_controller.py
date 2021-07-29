@@ -119,6 +119,21 @@ class TestTabeleController(BaseTestCase):
         for record in outcome:
             self.assertEqual(record['OBJ_ULI'], 99)
             self.assertEqual(record['DOK_ULI'], randid)
+        #CASE: 204 on nonexistent filter object
+        what = { 'OTP_ULI': 1000 }
+        where = [
+            WhereType('OBJ_ULI', 'eq', '10'),
+            WhereType('DOK_ULI', 'eq', '20'),
+            WhereType('SIF_ULI', 'eq', '999'),
+        ]
+        body = UpdateType(what, where)
+        response = self.client.open(
+            '/{table}'.format(table='uliz'),
+            method='PATCH',
+            headers=AUTH_HEADERS,
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assertEqual(response.status_code, 204)
 
     def test_table_post(self):
         """Test case for table_post
