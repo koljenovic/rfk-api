@@ -4,7 +4,7 @@ import six
 from flask import json
 from connexion.exceptions import ProblemException
 from .controller_helper import ControllerHelper
-from rfkadapter import FieldError
+from rfkadapter import FieldError, HarbourError
 
 from swagger_server.models.dict_type import DictType  # noqa: E501
 from swagger_server.models.update_type import UpdateType  # noqa: E501
@@ -79,7 +79,10 @@ def table_post(body, table):  # noqa: E501
         _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
         body = [DictType.from_dict(d) for d in connexion.request.get_json()]  # noqa: E501
         for record in body:
-            _adapter.write(record)
+            try:
+                _adapter.write(record)
+            except HarbourError as e:
+                raise ProblemException(status=500, title='ERROR: selected database is already in use and locked by other application, free the lock for the request to succeed', detail=str(e))
         return ''
 
     raise ProblemException(status=400, title='ERROR: request body not JSON or invalid', detail='request body has to be valid WhereType style JSON')
