@@ -1,6 +1,7 @@
 .data
 .git
 run_docker
+build_docker
 
 .travis.yaml
 .swagger-codegen-ignore

@@ -122,9 +122,9 @@ class TestTabeleController(BaseTestCase):
         #CASE: 204 on nonexistent filter object
         what = { 'OTP_ULI': 1000 }
         where = [
-            WhereType('OBJ_ULI', 'eq', '10'),
-            WhereType('DOK_ULI', 'eq', '20'),
-            WhereType('SIF_ULI', 'eq', '999'),
+            WhereType('OBJ_ULI', 'eq', '99'),
+            WhereType('DOK_ULI', 'eq', '99'),
+            WhereType('SIF_ULI', 'eq', '22584'),
         ]
         body = UpdateType(what, where)
         response = self.client.open(

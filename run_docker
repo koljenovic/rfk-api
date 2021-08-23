@@ -1,3 +1,3 @@
 docker stop rfkapi
 docker rm rfkapi
-docker run -dp 8844:8844 -v ~/.rfk/data:/usr/src/app/.data --name rfkapi rfkapi:0.3.0
+docker run -dp 8844:8844 -v ~/.rfk/data:/usr/src/app/.data --name rfkapi rfkapi:0.3.1

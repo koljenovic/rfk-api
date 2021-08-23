@@ -28,7 +28,7 @@ def table_filter_post(body, table):  # noqa: E501
         testing = 'X-TESTING' in connexion.request.headers
         _adapter = ControllerHelper.make_adapter(table, testing=testing)
         _ = [WhereType.from_dict(e) for e in body]
-        conditions = [c.values() for c in body]
+        conditions = [tuple(c.values()) for c in body]
         try:
             return _adapter.where(conditions)
         except FieldError as e:
@@ -52,12 +52,14 @@ def table_patch(body, table):  # noqa: E501
     if connexion.request.is_json:
         testing = 'X-TESTING' in connexion.request.headers
         _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
-        conditions = [c.values() for c in body['where']]
+        conditions = [tuple(c.values()) for c in body['where']]
         body = UpdateType.from_dict(connexion.request.get_json())  # noqa: E501
-        if _adapter.update(body.what, conditions):
-            return ''
-        else:
-            return 'no update performed', 204
+        updated_count = _adapter.update(body.what, conditions)
+        if updated_count != None:
+            if updated_count > 0:
+                return ''
+            else:
+                return 'no update performed', 204
         
     raise ProblemException(status=400, title='ERROR: request body not JSON or invalid', detail='request body has to be valid WhereType style JSON')
 

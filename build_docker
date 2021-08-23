@@ -1,3 +1,4 @@
 docker stop rfkapi
 docker rm rfkapi
-docker build -t rfkapi:0.3.0 .
+cp /usr/local/bin/dbfadapter .
+docker build -t rfkapi:0.3.1 .
