@@ -27,5 +27,6 @@ class ControllerHelper:
         with os.scandir(_db_path) as db:
             for table in db:
                 if table.is_file() and table.name.lower().endswith('.dbf'):
-                    tables.append(table.name)
-        return tables
+                    if os.path.isfile(_db_path + '/' + table.name.split('.')[0] + '.json'):
+                        tables.append(table.name)
+        return sorted(tables)
