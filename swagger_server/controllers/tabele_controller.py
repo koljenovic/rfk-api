@@ -26,7 +26,7 @@ def table_filter_post(body, table):  # noqa: E501
     """
     if connexion.request.is_json:
         testing = 'X-TESTING' in connexion.request.headers
-        _adapter = ControllerHelper.make_adapter(table, testing=testing)
+        _adapter = ControllerHelper.make_adapter(table, 'cp852', testing=testing)
         _ = [WhereType.from_dict(e) for e in body]
         conditions = [tuple(c.values()) for c in body]
         try:
@@ -51,7 +51,7 @@ def table_patch(body, table):  # noqa: E501
     """
     if connexion.request.is_json:
         testing = 'X-TESTING' in connexion.request.headers
-        _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
+        _adapter = ControllerHelper.make_adapter(table, code_page='cp852', mode='W', testing=testing)
         conditions = [tuple(c.values()) for c in body['where']]
         body = UpdateType.from_dict(connexion.request.get_json())  # noqa: E501
         updated_count = _adapter.update(body.what, conditions)
@@ -78,7 +78,7 @@ def table_post(body, table):  # noqa: E501
     """
     if connexion.request.is_json:
         testing = 'X-TESTING' in connexion.request.headers
-        _adapter = ControllerHelper.make_adapter(table, mode='W', testing=testing)
+        _adapter = ControllerHelper.make_adapter(table, 'cp852', mode='W', testing=testing)
         body = [DictType.from_dict(d) for d in connexion.request.get_json()]  # noqa: E501
         for record in body:
             try:

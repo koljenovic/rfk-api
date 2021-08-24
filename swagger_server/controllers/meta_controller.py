@@ -28,5 +28,5 @@ def table_details_get(table):  # noqa: E501
     :rtype: List[str]
     """
     testing = 'X-TESTING' in connexion.request.headers
-    _adapter = ControllerHelper.make_adapter(table, testing=testing)
+    _adapter = ControllerHelper.make_adapter(table, 'cp852', testing=testing)
     return [str(f) for f in _adapter.header_fields]

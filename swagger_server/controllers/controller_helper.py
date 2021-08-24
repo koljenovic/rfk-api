@@ -7,7 +7,7 @@ from rfkadapter import RFKAdapter
 
 class ControllerHelper:
     @staticmethod
-    def make_adapter(table, mode='R', code_page='cp852', testing=False):
+    def make_adapter(table, code_page, mode='R', testing=False):
         _db_path = os.getenv('RFK_TEST_HOME') if testing else os.getenv('RFK_HOME')
         if _db_path == None or not os.path.isdir(_db_path):
             raise ProblemException(status=500, title='ERROR: RFK_HOME not set', detail='RFK_HOME environment variable has to be set to valid data directory path.')
@@ -18,7 +18,7 @@ class ControllerHelper:
         tables_lower = [t.lower() for t in tables]
         if table.lower() not in tables_lower:
             raise ProblemException(status=404, title='ERROR: table %s does not exist' % table, detail='table does not exist or invalid name, only alphanumeric characters allowed in name, table name is case insensitive e.g. ULIZ.DBF == uliz.DBF == uliz.dbf')
-        return RFKAdapter(_db_path + '/', tables[tables_lower.index(table)], mode, code_page=code_page)
+        return RFKAdapter(_db_path + '/', tables[tables_lower.index(table)], code_page, mode)
 
     @staticmethod
     def list_tables(testing=False):
