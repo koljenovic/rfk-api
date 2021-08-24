@@ -1,3 +1,6 @@
+0.3.2
+- code_page mandate implemented
+- bug fixes
 0.3.1
 - adapter replaced to DBFAdapter
 - statically linked dbfadapter included
