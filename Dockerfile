@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app
 RUN chmod +x dbfadapter
+RUN chmod +x dbfreindex
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
