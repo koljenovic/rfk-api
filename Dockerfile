@@ -27,5 +27,3 @@ ENV PATH="/usr/src/app:${PATH}"
 ENTRYPOINT ["gunicorn"]
 
 CMD ["-w 1", "-b 0.0.0.0:8844", "swagger_server.__main__:app()"]
-
-# @TODO: test rfk-api
