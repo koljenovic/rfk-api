@@ -6,21 +6,18 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-# @TODO: build fresh rfkadapter for dev
-# @TODO: test rfkadapter
-
-COPY swagger_server /usr/src/app
+COPY rfkadapter.tar.gz /usr/src/app
+COPY swagger_server /usr/src/app/swagger_server
 COPY requirements.txt /usr/src/app
 COPY LICENSE /usr/src/app
 
-RUN rm -rf tmp
 COPY --from=build /opt/rfk/dbfreindex .
 COPY --from=build /opt/rfk/dbfadapter .
 RUN chmod +x dbfadapter
 RUN chmod +x dbfreindex
 
 RUN pip3 install --no-cache-dir -r requirements.txt
-
+RUN pip3 install --no-cache-dir rfkadapter.tar.gz
 EXPOSE 8844
 
 ENV RFK_HOME=/usr/src/app/.data/

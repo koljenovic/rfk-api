@@ -1,0 +1,13 @@
+#! /usr/bin/env bash
+source .env
+docker stop rfkapi-test
+docker stop rfkapi
+docker rm rfkapi-test
+docker rm rfkapi
+docker run -dp 8844:8844 -v $RFK_TEST_HOME:/usr/src/app/.data --name rfkapi-test rfkapi:latest &&
+sleep 5 &&
+./test_integration &&
+echo "OK" ||
+echo "NOK"
+docker stop rfkapi-test
+docker rm rfkapi-test

@@ -1,6 +1,13 @@
+#! /usr/bin/env bash
+source .env
 docker stop rfkapi
 docker rm rfkapi
 cd ../rfk/harbour
 ./build_docker
-cd ../../api
-docker build -t rfkapi:0.3.4 -t rfkapi:latest .
+cd ..
+./build &&
+RFKPKG=`ls -At dist/*.tar.gz | head -n 1` &&
+cp $RFKPKG ../api/rfkadapter.tar.gz &&
+cd ../api &&
+docker build -t rfkapi:$VERSION -t rfkapi:latest .
+rm rfkadapter.tar.gz

@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+source .env
 docker stop rfkapi
 docker rm rfkapi
-docker run -dp 8844:8844 -v ~/.rfk/data:/usr/src/app/.data --restart unless-stopped --name rfkapi rfkapi:0.3.4
+docker run -dp 8844:8844 -v ~/.rfk/data:/usr/src/app/.data --restart unless-stopped --name rfkapi rfkapi:latest
